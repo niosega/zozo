@@ -21,8 +21,7 @@ class Zoe:
         url = self.kamareonURL + '/commerce/v1/accounts/' + self.account_id + '/kamereon/kca/car-adapter/v' + version + '/cars/' + self.VIN + '/' + endpoint + '?country=FR'
         headers = {"x-gigya-id_token": self.gigyaJWTToken, "apikey": self.kamareonAPI, "Content-type": "application/vnd.api+json"}
         response = requests.get(url, headers=headers)
-        print(json.dumps(json.loads(response.text), indent=4, sort_keys=True))
-        print()
+        return json.loads(response.text)
 
     def loadFromFile(self, filename):
         try:
@@ -74,16 +73,22 @@ class Zoe:
         self.account_id = json.loads(data)["accounts"][0]["accountId"]
 
     def batteryStatus(self):
-        self.getStatus("battery-status")
+        return self.getStatus("battery-status")
     
     def location(self):
-        self.getStatus("location", "1")
+        return self.getStatus("location", "1")
+
+    def googleLocation(self):
+        loc = self.location()
+        lat = str(loc["data"]["attributes"]["gpsLatitude"])
+        lon = str(loc["data"]["attributes"]["gpsLongitude"])
+        return "https://www.google.com/maps/search/" + lat + "+" + lon
     
     def chargingSettings(self):
-        self.getStatus("charging-settings", "1")
+        return self.getStatus("charging-settings", "1")
     
     def cockpit(self):
-        self.getStatus("cockpit", "1")
+        return self.getStatus("cockpit", "1")
     
     def hvacStatus(self):
-        self.getStatus("hvac-status", "1")
+        return self.getStatus("hvac-status", "1")
