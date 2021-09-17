@@ -1,4 +1,5 @@
 # Python API to query Renault Zoe information.
+You must first create a `MyRenault` account and link it to your car.
 
 # Installation
 ```
