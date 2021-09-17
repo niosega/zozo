@@ -27,5 +27,20 @@ zoe.getPersonnalInfo()
 # Then, you can use API methods.
 ```
 
+You can now use the different functions available:
+
+```
+# Retrieve url to open Google Maps with the location of your car
+zoe.googleLocation()
+
+# Name are self-explained. Return json.
+zoe.batteryStatus()
+zoe.location()
+zoe.chargingSettings()
+zoe.cockpit()
+zoe.hvacStatus()
+
+```
+
 # Thanks
 Big thanks to [dehsgr](https://gist.github.com/dehsgr/32c4d3dd5f8125be3a4c66d04e41d9b8).
