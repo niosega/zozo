@@ -5,8 +5,7 @@ import os
 
 class Zoe:
 
-    def __init__(self, VIN, myRenaultUser, myRenaultPass):
-        self.VIN = VIN
+    def __init__(self, myRenaultUser, myRenaultPass):
         self.myRenaultUser = myRenaultUser
         self.myRenaultPass = myRenaultPass
         self.gigyaURL = "https://accounts.eu1.gigya.com"
@@ -41,6 +40,8 @@ class Zoe:
             os.remove("secondstep.dta")
         if os.path.exists("thirdstep.dta"):
             os.remove("thirdstep.dta")
+        if os.path.exists("fourstep.dta"):
+            os.remove("fourstep.dta")
 
     def getPersonnalInfo(self):
         # Save the result to a file, to avoid being annoyed by renault server quota limits.
@@ -71,6 +72,16 @@ class Zoe:
             data = response.text
             self.saveToFile(data, "thirdstep.dta")
         self.account_id = json.loads(data)["accounts"][0]["accountId"]
+
+        # Save the result to a file, to avoid being annoyed by renault server quota limits.
+        data = self.loadFromFile("fourstep.dta")
+        if data is None:
+            url = self.kamareonURL + '/commerce/v1/accounts/' + self.account_id + '/vehicles?country=FR'
+            headers = {"x-gigya-id_token": self.gigyaJWTToken, "apikey": self.kamareonAPI}
+            response = requests.get(url, headers=headers)
+            data = response.text
+            self.saveToFile(data, "fourstep.dta")
+        self.VIN = json.loads(data)["vehicleLinks"][0]["vin"]
 
     def batteryStatus(self):
         return self.getStatus("battery-status")
